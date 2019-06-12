@@ -8,6 +8,7 @@ Page({
     //该页面中的两个变量
     latitude: 0,
     longitude: 0,
+    qrCode:0,
     controls: []
   },
 
@@ -145,11 +146,37 @@ Page({
 
   },
 
+  //按钮点击事件
   contap(e){
     var that = this;
     if (e.controlId == 2) {
       //点击定位当前位置
       that.mapCtx.moveToLocation();
+    }
+    if (e.controlId == 3) {
+      //点击扫描按钮
+      wx.scanCode({
+        success:function(r){
+          //扫描成功获取二维码的信息
+          var code=r.result
+          //向后台发送请求
+          wx.request({
+            //method: 'POST',
+            url: 'http://localhost:8888/bike',
+            data:{
+              qrCode:code,
+              latitude:that.data.latitude,
+              longitude:that.data.longitude
+            },
+            header: {
+              'content-type':'application/json' // 默认值
+            },
+            success: function (res) {
+              console.log(res.data)
+            }
+          })
+        }
+      })
     }
   }
 })
