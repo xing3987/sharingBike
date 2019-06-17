@@ -13,6 +13,31 @@ Page({
     markers:[] //页面上的所有图标
   },
 
+/*
+  getAllBikes: function (res) {
+    wx.request({
+      url: "http://localhost:8888/bike/all",
+      method: 'GET',
+      success: function (res) {
+        const bikes = res.data.map((item) => {
+          return {
+            id: item.id,
+            iconPath: "/images/bike.png",
+            width: 20,
+            height: 15,
+            latitude: item.latitude,
+            longitude: item.longitude
+          };
+        });
+        // 修改data里面的markers
+        that.setData({
+          markers: bikes
+        });
+      }
+    })
+  },
+  */
+  
   /**
    * 生命周期函数--监听页面加载
    */
@@ -30,6 +55,27 @@ Page({
           latitude: lat,
           longitude: log
         });
+
+        wx.request({
+          url: "http://localhost:8888/bike/all",
+          method: 'GET',
+          success: function (res) {
+            const bikes = res.data.map((item) => {
+              return {
+                id: item.id,
+                iconPath: "/images/bike.png",
+                width: 20,
+                height: 15,
+                latitude: item.latitude,
+                longitude: item.longitude
+              };
+            });
+            // 修改data里面的markers
+            that.setData({
+              markers: bikes
+            });
+          }
+        })
       }
     });
 
