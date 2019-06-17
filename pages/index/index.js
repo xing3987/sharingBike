@@ -9,7 +9,8 @@ Page({
     latitude: 0,
     longitude: 0,
     qrCode:0,
-    controls: []
+    controls: [],
+    markers:[] //页面上的所有图标
   },
 
   /**
@@ -90,7 +91,17 @@ Page({
             },
             //是否可点击
             clickable: true
-          }]
+          },{
+              //添加一辆小飞机
+              id: 5,
+              iconPath: '/images/bike.png',
+              position: {
+                width: 20,
+                height: 15,
+              },
+              //是否可点击
+              clickable: true
+            }]
         })
       },
     })
@@ -173,6 +184,50 @@ Page({
             },
             success: function (res) {
               console.log(res.data)
+            }
+          })
+        }
+      })
+    }
+    if (e.controlId == 5) {
+      //添加车辆
+      that.mapCtx.getCenterLocation({
+        success: function (res) {
+          var lat=res.latitude
+          var log=res.longitude
+          wx.request({
+            method: 'POST',
+            url: 'http://localhost:8888/bike',
+            data: {
+              latitude: lat,
+              longitude: log
+            },
+            header: {
+              'content-type': 'application/json' // 默认值
+            },
+            success: function (res) {
+              console.log('success!')
+              //向后台发送请求，将单车查找出来
+              wx.request({
+                url: "http://localhost:8888/bike/all",
+                method: 'GET',
+                success: function (res) {
+                  const bikes = res.data.map((item) => {
+                    return {
+                      id: item.id,
+                      iconPath: "/images/bike.png",
+                      width: 20,
+                      height: 15,
+                      latitude: item.latitude,
+                      longitude: item.longitude
+                    };
+                  });
+                  // 修改data里面的markers
+                  that.setData({
+                    markers: bikes
+                  });
+                }
+              })
             }
           })
         }
