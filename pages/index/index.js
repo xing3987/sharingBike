@@ -16,7 +16,7 @@ Page({
 /*
   getAllBikes: function (res) {
     wx.request({
-      url: "http://localhost:8888/bike/all",
+      url: "http://localhost:8888/bike/list",
       method: 'GET',
       success: function (res) {
         const bikes = res.data.map((item) => {
@@ -37,7 +37,7 @@ Page({
     })
   },
   */
-  
+
   /**
    * 生命周期函数--监听页面加载
    */
@@ -57,7 +57,7 @@ Page({
         });
 
         wx.request({
-          url: "http://localhost:8888/bike/all",
+          url: "http://localhost:8888/bike/list",
           method: 'GET',
           success: function (res) {
             const bikes = res.data.map((item) => {
@@ -159,6 +159,29 @@ Page({
   onReady: function () {
     //创建一个map上下文，如果想要调用地图相关的方发
     this.mapCtx = wx.createMapContext('map');
+    //获取当前位置
+    wx.getLocation({
+      success: function (res) {
+        //纬度
+        var lat = res.latitude;
+        //经度
+        var log = res.longitude;
+        //从本地存储中取出唯一身份标识(同步获取)
+        var openid = wx.getStorageSync('openid')
+        //发送request向mongo中添加数据（添加一条文档（json））
+        wx.request({
+          //用POST方式请求es可以只指定index和type，不用指定id
+          url: "http://localhost:8888/log/ready",
+          data: {
+            time: new Date(),
+            openid: openid,
+            latitude: lat,
+            longitude: log
+          },
+          method: "POST"
+        })
+      },
+    })
   },
 
   /**
@@ -255,7 +278,7 @@ Page({
               console.log('success!')
               //向后台发送请求，将单车查找出来
               wx.request({
-                url: "http://localhost:8888/bike/all",
+                url: "http://localhost:8888/bike/list",
                 method: 'GET',
                 success: function (res) {
                   const bikes = res.data.map((item) => {
