@@ -8,7 +8,7 @@
 
 <view class="pledgecont">
   <view class="classname">
-    <image src="/image/shield.png"></image>
+    <image src="/images/shield.png"></image>
     <text>押金（可退）</text>
     <text class="pull-right">￥299</text>
   </view>

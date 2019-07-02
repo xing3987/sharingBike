@@ -120,20 +120,30 @@ Page({
       method: "POST",
       success: function (res) {
         console.log(res);
-        if (res.data) {
+        if (res.data==true && res.statusCode==200) {//验证和保存用户数据，成功则跳转到充值页面
+          wx.navigateTo({
+            url: '../deposit/deposit'
+          })
+          /*
           wx.request({
             //微信小程序成产环境请求的协议必须是https，地址必须是域名，不能带端口号
             url: "http://localhost:8888/reg",
-            data: e.detail.value,
+            data: {
+              phoneNum: phoneNum,
+              verifyCode: verifyCode,
+              status: 1,
+              id: openid
+            },
             method: 'POST',
             success: function (res) {
               var globalData = getApp().globalData
               globalData.phoneNum = phoneNum
               wx.navigateTo({
-                url: '../deposit/deposit'
+                //url: '../deposit/deposit'
               })
             }
           })
+          */
         } else {
           wx.showModal({
             title: '提示',
