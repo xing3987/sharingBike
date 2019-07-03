@@ -37,11 +37,13 @@ App({
       }
     })
   },
+  
   globalData: {
     openid: "",
     status: 0,
     balance: 0, //余额
-    userInfo: null
+    userInfo: null,
+    phoneNum:""
   }
 })
 

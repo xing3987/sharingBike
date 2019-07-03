@@ -15,3 +15,5 @@
 <view class="recharge">
   <button type="primary" bindtap="recharge">去充值</button>
 </view>
+
+ <view class="sumName">余额：{{money}}</view>

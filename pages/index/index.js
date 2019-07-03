@@ -283,6 +283,12 @@ Page({
       }
     }
 
+    if (e.controlId == 4) {
+      wx.navigateTo({
+        url: '../pay/pay',
+      })
+    }
+
     if (e.controlId == 5) {
       //添加车辆
       that.mapCtx.getCenterLocation({
